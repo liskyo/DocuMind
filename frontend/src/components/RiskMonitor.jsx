@@ -6,7 +6,7 @@ import DiffView from './DiffView';
 import { translations } from '../translations';
 
 const RiskMonitor = ({ data, lang, fileName }) => {
-    const { risk_score, analysis_summary, findings, full_text } = data;
+    const { risk_score, analysis_summary, findings = [], full_text } = data;
     const [expandedId, setExpandedId] = useState(null);
     const [rewritingId, setRewritingId] = useState(null);
     const [isFixingAll, setIsFixingAll] = useState(false);

@@ -34,6 +34,14 @@ function App() {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
 
+            // detailed validity check
+            if (response.data.error) {
+                throw new Error(typeof response.data.error === 'string' ? response.data.error : JSON.stringify(response.data.error));
+            }
+            if (!response.data.findings || !Array.isArray(response.data.findings)) {
+                throw new Error("Invalid response format: 'findings' array is missing.");
+            }
+
             setTimeout(() => {
                 const finalResult = { ...response.data, filename: file.name };
                 setResult(finalResult);
