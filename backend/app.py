@@ -4,6 +4,11 @@ from dotenv import load_dotenv
 # Load env before importing services that might read env vars at module level
 load_dotenv()
 
+import sys
+import os
+# Ensure current directory is in path so 'services' module can be found
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
 from fastapi import FastAPI, HTTPException, UploadFile, File
 from pydantic import BaseModel
 from typing import List, Optional
