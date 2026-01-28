@@ -26,7 +26,7 @@ async def call_gemini(system_prompt: str, user_content: str, temperature: float 
     genai.configure(api_key=current_key)
         
     try:
-        model = genai.GenerativeModel('gemini-2.0-flash')
+        model = genai.GenerativeModel('gemini-2.5-pro')
         # Gemini Pro doesn't strictly support system prompts in the same way as GPT-4, 
         # but we can prepend it or use the new system_instruction if available in the library version.
         # For compatibility, we'll prepend.
