@@ -133,6 +133,34 @@ const RiskMonitor = ({ data, lang, fileName }) => {
         }
     };
 
+    const handleDownloadTxt = () => {
+        let content = full_text || "";
+        if (!content) {
+            alert("Unable to download: Full text not available.");
+            return;
+        }
+
+        // Apply rewrites
+        Object.values(rewrites).forEach(rewrite => {
+            if (rewrite && rewrite.original && rewrite.rewritten) {
+                content = content.replace(rewrite.original, rewrite.rewritten);
+            }
+        });
+
+        const nameParts = fileName.split('.');
+        if (nameParts.length > 1) nameParts.pop();
+        const baseName = nameParts.join('.');
+
+        const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `${baseName}_修正版.txt`);
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+    };
+
     return (
         <div className="space-y-6 animate-in fade-in slide-in-from-bottom-5 duration-700">
             {/* Dashboard Header */}
@@ -153,7 +181,7 @@ const RiskMonitor = ({ data, lang, fileName }) => {
                             initial={{ width: 0 }}
                             animate={{ width: `${risk_score}%` }}
                             transition={{ duration: 1.5, ease: "easeOut" }}
-                            className={`h-full shadow-[0_0_10px_currentColor] ${risk_score < 60 ? 'bg-risk-high text-risk-high' : risk_score < 85 ? 'bg-risk-warn text-risk-warn' : 'bg-risk-safe text-risk-safe'}`}
+                            className={`h-full shadow-[0_0_10px_currentColor] ${risk_score < 60 ? 'text-risk-high bg-risk-high' : risk_score < 85 ? 'text-risk-warn bg-risk-warn' : 'text-risk-safe bg-risk-safe'}`}
                         />
                     </div>
                 </div>
@@ -197,13 +225,24 @@ const RiskMonitor = ({ data, lang, fileName }) => {
                         </button>
 
                         {Object.keys(rewrites).length > 0 && (
-                            <button
-                                onClick={handleDownload}
-                                className="flex items-center gap-2 bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-lg text-sm font-bold border border-gray-600 transition-all"
-                            >
-                                <Download className="w-4 h-4" />
-                                {t.downloadButton}
-                            </button>
+                            <>
+                                <button
+                                    onClick={handleDownload}
+                                    title="Download .docx"
+                                    className="flex items-center gap-2 bg-gray-800 hover:bg-gray-700 text-white px-3 py-2 rounded-lg text-sm font-bold border border-gray-600 transition-all"
+                                >
+                                    <Download className="w-4 h-4" />
+                                    DOCX
+                                </button>
+                                <button
+                                    onClick={handleDownloadTxt}
+                                    title="Download .txt"
+                                    className="flex items-center gap-2 bg-gray-800 hover:bg-gray-700 text-white px-3 py-2 rounded-lg text-sm font-bold border border-gray-600 transition-all"
+                                >
+                                    <Download className="w-4 h-4" />
+                                    TXT
+                                </button>
+                            </>
                         )}
                     </div>
                 </div>
