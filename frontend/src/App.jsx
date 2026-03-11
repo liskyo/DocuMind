@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Upload, AlertTriangle, FileText, Globe, ArrowLeft, ShieldCheck, Sparkles } from 'lucide-react';
+import { Upload, AlertTriangle, FileText, Globe, ArrowLeft, ArrowRight, ShieldCheck, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import RiskMonitor from './components/RiskMonitor';
 import QABot from './components/QABot';
@@ -14,13 +14,6 @@ function App() {
     const [showSplash, setShowSplash] = useState(true);
 
     const t = translations[lang];
-
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setShowSplash(false);
-        }, 2800);
-        return () => clearTimeout(timer);
-    }, []);
 
     const toggleLang = () => {
         setLang(prev => prev === 'en' ? 'zh' : 'en');
@@ -121,28 +114,19 @@ function App() {
                             {t.appTitle}
                         </motion.h1>
 
-                        <motion.p
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: 1.2, duration: 0.5 }}
-                            className="text-docu-accent tracking-[0.3em] uppercase text-sm font-semibold"
+                        <motion.button
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.8, duration: 0.5 }}
+                            onClick={() => setShowSplash(false)}
+                            className="mt-8 px-10 py-4 bg-gradient-to-r from-docu-accent to-docu-neon-purple rounded-full text-white font-bold text-xl hover:shadow-[0_0_30px_rgba(59,130,246,0.6)] hover:scale-105 active:scale-95 transition-all flex items-center gap-3 group relative overflow-hidden z-10 cursor-pointer"
                         >
-                            {lang === 'en' ? 'System Initializing...' : '系統啟動中...'}
-                        </motion.p>
-                    </motion.div>
-
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 1.5, duration: 0.5 }}
-                        className="absolute bottom-24 w-64 h-1 bg-gray-800 rounded-full overflow-hidden z-10"
-                    >
-                        <motion.div
-                            initial={{ x: "-100%" }}
-                            animate={{ x: "0%" }}
-                            transition={{ duration: 1.5, ease: "easeInOut", delay: 1.5 }}
-                            className="h-full bg-gradient-to-r from-docu-accent to-docu-neon-purple rounded-full shadow-neon-blue"
-                        />
+                            <span className="relative z-10 flex items-center gap-2 tracking-widest">
+                                {lang === 'en' ? 'START ANALYSIS' : '開始分析'}
+                                <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform" />
+                            </span>
+                            <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity z-0" />
+                        </motion.button>
                     </motion.div>
                 </motion.div>
             ) : (
