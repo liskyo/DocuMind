@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Upload, AlertTriangle, FileText, Globe, ArrowLeft, ArrowRight, ShieldCheck, Sparkles } from 'lucide-react';
+import { Upload, AlertTriangle, FileText, Globe, ArrowLeft, ArrowRight, ShieldCheck, Sparkles, Hexagon, Lock, Database } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import RiskMonitor from './components/RiskMonitor';
 import QABot from './components/QABot';
@@ -66,8 +66,54 @@ function App() {
                     className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-docu-dark selection:bg-docu-accent selection:text-black overflow-hidden"
                 >
                     <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
-                        {/* 科技感網格背景 */}
-                        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_70%,transparent_100%)]"></div>
+                        {/* 科技感大網格背景 */}
+                        <div className="absolute inset-0 opacity-40 bg-[linear-gradient(to_right,#3b82f61a_1px,transparent_1px),linear-gradient(to_bottom,#3b82f61a_1px,transparent_1px)] bg-[size:60px_60px] [mask-image:radial-gradient(ellipse_80%_80%_at_50%_50%,#000_60%,transparent_100%)]"></div>
+
+                        {/* 漂浮的區塊鏈與合約圖示 */}
+                        <div className="absolute inset-0 opacity-20">
+                            {[
+                                { Icon: Hexagon, size: 48, top: '20%', left: '15%', delay: 0 },
+                                { Icon: Lock, size: 36, top: '70%', left: '80%', delay: 1 },
+                                { Icon: Database, size: 40, top: '30%', left: '75%', delay: 2 },
+                                { Icon: FileText, size: 52, top: '65%', left: '20%', delay: 0.5 },
+                                { Icon: Hexagon, size: 32, top: '15%', left: '85%', delay: 1.5 },
+                                { Icon: Database, size: 36, top: '80%', left: '40%', delay: 2.5 },
+                            ].map((node, i) => (
+                                <motion.div
+                                    key={`node-${i}`}
+                                    className="absolute text-docu-accent flex items-center justify-center"
+                                    style={{ top: node.top, left: node.left }}
+                                    animate={{
+                                        y: [0, -25, 0],
+                                        opacity: [0.1, 0.7, 0.1],
+                                        rotate: [0, 10, -10, 0]
+                                    }}
+                                    transition={{
+                                        duration: 6 + (i % 3),
+                                        repeat: Infinity,
+                                        ease: "easeInOut",
+                                        delay: node.delay
+                                    }}
+                                >
+                                    <node.Icon width={node.size} height={node.size} className="drop-shadow-[0_0_15px_rgba(59,130,246,0.6)]" />
+                                </motion.div>
+                            ))}
+                        </div>
+
+                        {/* 智能合約十六進制代碼流 */}
+                        <div className="absolute inset-0 overflow-hidden mix-blend-screen opacity-20 select-none">
+                            {[...Array(6)].map((_, i) => (
+                                <motion.div
+                                    key={`code-${i}`}
+                                    className="absolute whitespace-nowrap text-docu-neon-purple font-mono text-xs tracking-widest font-bold"
+                                    style={{ top: `${15 + i * 14}%`, left: '-100%' }}
+                                    animate={{ x: ['0vw', '150vw'] }}
+                                    transition={{ duration: 25 - (i % 3) * 2, repeat: Infinity, ease: 'linear', delay: i * 2 }}
+                                >
+                                    {`0x${(1234567 * (i + 1)).toString(16).padEnd(6, '0').toUpperCase()} [AI_VERIFY] > VALIDATING_CONTRACT_CLAUSES ... SECURE_HASH: ${(987654321 * (i + 1)).toString(16).padStart(12, '0').toUpperCase()} >>>`}
+                                </motion.div>
+                            ))}
+                        </div>
 
                         {/* 兩顆主要的光暈 */}
                         <motion.div
@@ -82,31 +128,6 @@ function App() {
                             transition={{ duration: 5, repeat: Infinity, repeatType: "reverse", delay: 1, ease: "easeInOut" }}
                             className="absolute w-[30rem] h-[30rem] bg-docu-neon-purple rounded-full blur-[100px]"
                         />
-
-                        {/* 頂部墜落的資料流/粒子 */}
-                        {[...Array(15)].map((_, i) => (
-                            <motion.div
-                                key={`particle-${i}`}
-                                className="absolute rounded-full bg-docu-accent shadow-[0_0_10px_rgba(59,130,246,0.8)]"
-                                initial={{
-                                    width: Math.random() * 3 + 1 + 'px',
-                                    height: Math.random() * 3 + 1 + 'px',
-                                    left: `${Math.random() * 100}%`,
-                                    top: `${Math.random() * 100}%`
-                                }}
-                                animate={{
-                                    y: [0, Math.random() * -150 - 50],
-                                    opacity: [0, Math.random() * 0.5 + 0.3, 0],
-                                    scale: [0, 1.5, 0.5]
-                                }}
-                                transition={{
-                                    duration: Math.random() * 4 + 4,
-                                    repeat: Infinity,
-                                    ease: "linear",
-                                    delay: Math.random() * 3
-                                }}
-                            />
-                        ))}
                     </div>
 
                     <motion.div
