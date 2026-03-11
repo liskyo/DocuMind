@@ -65,19 +65,48 @@ function App() {
                     transition={{ duration: 0.6, ease: "easeInOut" }}
                     className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-docu-dark selection:bg-docu-accent selection:text-black overflow-hidden"
                 >
-                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
+                        {/* 科技感網格背景 */}
+                        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_70%,transparent_100%)]"></div>
+
+                        {/* 兩顆主要的光暈 */}
                         <motion.div
                             initial={{ scale: 0.8, opacity: 0 }}
                             animate={{ scale: 1.5, opacity: 0.15 }}
-                            transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
-                            className="w-96 h-96 bg-docu-accent rounded-full blur-[100px]"
+                            transition={{ duration: 4, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" }}
+                            className="absolute w-[35rem] h-[35rem] bg-docu-accent rounded-full blur-[120px]"
                         />
                         <motion.div
                             initial={{ scale: 1.2, opacity: 0 }}
                             animate={{ scale: 0.8, opacity: 0.15 }}
-                            transition={{ duration: 2.5, repeat: Infinity, repeatType: "reverse", delay: 0.5 }}
-                            className="w-80 h-80 bg-docu-neon-purple rounded-full blur-[100px] absolute"
+                            transition={{ duration: 5, repeat: Infinity, repeatType: "reverse", delay: 1, ease: "easeInOut" }}
+                            className="absolute w-[30rem] h-[30rem] bg-docu-neon-purple rounded-full blur-[100px]"
                         />
+
+                        {/* 頂部墜落的資料流/粒子 */}
+                        {[...Array(15)].map((_, i) => (
+                            <motion.div
+                                key={`particle-${i}`}
+                                className="absolute rounded-full bg-docu-accent shadow-[0_0_10px_rgba(59,130,246,0.8)]"
+                                initial={{
+                                    width: Math.random() * 3 + 1 + 'px',
+                                    height: Math.random() * 3 + 1 + 'px',
+                                    left: `${Math.random() * 100}%`,
+                                    top: `${Math.random() * 100}%`
+                                }}
+                                animate={{
+                                    y: [0, Math.random() * -150 - 50],
+                                    opacity: [0, Math.random() * 0.5 + 0.3, 0],
+                                    scale: [0, 1.5, 0.5]
+                                }}
+                                transition={{
+                                    duration: Math.random() * 4 + 4,
+                                    repeat: Infinity,
+                                    ease: "linear",
+                                    delay: Math.random() * 3
+                                }}
+                            />
+                        ))}
                     </div>
 
                     <motion.div
